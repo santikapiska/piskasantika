@@ -1,0 +1,30 @@
+<!-- customer-dashboard.html -->
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Customer Dashboard</title>
+</head>
+<body>
+    <h2>Welcome to Customer Dashboard</h2>
+    
+    <div id="pesananList">
+        <h3>Daftar Pesanan</h3>
+        <ul id="pesananItems">
+            <!-- Dynamic list of pesanan items will be inserted here -->
+        </ul>
+    </div>
+
+    <script>
+        // Retrieve pesanan data from local storage and display
+        var pesanan = JSON.parse(localStorage.getItem('pesanan'));
+        if (pesanan) {
+            var pesananList = document.getElementById('pesananItems');
+            var pesananItem = document.createElement('li');
+            pesananItem.textContent = `ID Pesanan: ${pesanan.idPesanan}, Tanggal Pesanan: ${pesanan.tanggalPesanan}, ID Produk: ${pesanan.idProduk}, Jumlah Pesanan: ${pesanan.jumlahPesanan}, Status Pesanan: ${pesanan.statusPesanan}`;
+            pesananList.appendChild(pesananItem);
+        }
+    </script>
+</body>
+</html>

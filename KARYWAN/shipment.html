@@ -1,0 +1,126 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Shipment Form</title>
+<style>
+    body {
+        font-family: Arial, sans-serif;
+        background-color: #f0f0f0;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        height: 100vh; /* Menggunakan tinggi 100% dari viewport height */
+        margin: 0;
+    }
+    .container {
+        width: 80%; /* Lebar kontainer */
+        max-width: 600px; /* Maksimum lebar kontainer */
+        background-color: #ffffff;
+        padding: 20px;
+        border-radius: 8px;
+        box-shadow: 0 0 10px rgba(0,0,0,0.1);
+        display: flex; /* Menggunakan flexbox untuk layout */
+    }
+    .left-side {
+        flex: 1; /* Menggunakan flex untuk meratakan konten */
+    }
+    .right-side {
+        flex: 1; /* Menggunakan flex untuk meratakan konten */
+        padding-left: 20px; /* Memberi ruang agar terlihat lebih terpisah */
+        border-left: 1px solid #ccc; /* Garis pemisah antara konten */
+    }
+    .container h2 {
+        text-align: center;
+        margin-bottom: 20px;
+    }
+    .container form {
+        display: flex;
+        flex-direction: column;
+    }
+    .container form input,
+    .container form select {
+        margin-bottom: 10px;
+        padding: 8px;
+        font-size: 14px;
+        border: 1px solid #ccc;
+        border-radius: 4px;
+        box-sizing: border-box;
+    }
+    .container form button {
+        padding: 10px 20px;
+        background-color: #4CAF50;
+        color: white;
+        border: none;
+        border-radius: 4px;
+        cursor: pointer;
+        font-size: 16px;
+    }
+</style>
+</head>
+<body>
+    <div class="container">
+        <div class="left-side">
+            <h2>Create Shipment</h2>
+            <form id="shipmentForm" onsubmit="submitShipment(event)">
+                <input type="text" id="idPengiriman" placeholder="ID Pengiriman" required>
+                <input type="date" id="tanggalPengiriman" required>
+                <select id="statusPengiriman" required>
+                    <option value="Belum Diproses">Belum Diproses</option>
+                    <option value="Sedang Diproses">Sedang Diproses</option>
+                    <option value="Selesai">Selesai</option>
+                </select>
+                <input type="text" id="idPesanan" placeholder="ID Pesanan" required>
+                <input type="text" id="idGudang" placeholder="ID Gudang" required>
+                <input type="text" id="tujuanKota" placeholder="Tujuan Kota" required>
+                <button type="submit">Submit Shipment</button>
+            </form>
+        </div>
+        <div class="right-side">
+            <h2>Shipment Result</h2>
+            <div id="shipmentResult">
+                <!-- Result of shipment submission will be displayed here -->
+            </div>
+        </div>
+    </div>
+
+    <script>
+        function submitShipment(event) {
+            event.preventDefault();
+            
+            // Get form values
+            var idPengiriman = document.getElementById('idPengiriman').value;
+            var tanggalPengiriman = document.getElementById('tanggalPengiriman').value;
+            var statusPengiriman = document.getElementById('statusPengiriman').value;
+            var idPesanan = document.getElementById('idPesanan').value;
+            var idGudang = document.getElementById('idGudang').value;
+            var tujuanKota = document.getElementById('tujuanKota').value;
+            
+            // Simulate storing data (can be replaced with backend API call)
+            var shipment = {
+                idPengiriman: idPengiriman,
+                tanggalPengiriman: tanggalPengiriman,
+                statusPengiriman: statusPengiriman,
+                idPesanan: idPesanan,
+                idGudang: idGudang,
+                tujuanKota: tujuanKota
+            };
+
+            // Display result on the right side
+            var shipmentResultDiv = document.getElementById('shipmentResult');
+            shipmentResultDiv.innerHTML = `
+                <p><strong>ID Pengiriman:</strong> ${shipment.idPengiriman}</p>
+                <p><strong>Tanggal Pengiriman:</strong> ${shipment.tanggalPengiriman}</p>
+                <p><strong>Status Pengiriman:</strong> ${shipment.statusPengiriman}</p>
+                <p><strong>ID Pesanan:</strong> ${shipment.idPesanan}</p>
+                <p><strong>ID Gudang:</strong> ${shipment.idGudang}</p>
+                <p><strong>Tujuan Kota:</strong> ${shipment.tujuanKota}</p>
+            `;
+            
+            // Clear form after submission (optional)
+            document.getElementById('shipmentForm').reset();
+        }
+    </script>
+</body>
+</html>

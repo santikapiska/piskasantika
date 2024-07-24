@@ -1,0 +1,170 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Input Pesanan</title>
+<style>
+    body {
+        font-family: Arial, sans-serif;
+        background-color: #f0f0f0;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        height: 100vh; /* Menggunakan tinggi 100% dari viewport height */
+        margin: 0;
+    }
+    .container {
+        width: 80%; /* Lebar kontainer */
+        max-width: 800px; /* Maksimum lebar kontainer */
+        background-color: #ffffff;
+        padding: 20px;
+        border-radius: 8px;
+        box-shadow: 0 0 10px rgba(0,0,0,0.1);
+        display: grid; /* Menggunakan grid untuk layout */
+        grid-template-columns: 1fr 1fr; /* Dua kolom dengan lebar yang sama */
+        gap: 20px; /* Jarak antar elemen */
+    }
+    .left-side {
+        grid-column: 1 / span 1; /* Mengambil satu kolom di bagian kiri */
+    }
+    .right-side {
+        grid-column: 2 / span 1; /* Mengambil satu kolom di bagian kanan */
+        border-left: 1px solid #ccc; /* Garis pemisah antara konten */
+        padding-left: 20px; /* Ruang kiri untuk memisahkan dari tepi */
+    }
+    .container h2 {
+        text-align: center;
+        margin-bottom: 20px;
+    }
+    .container form {
+        display: flex;
+        flex-direction: column;
+    }
+    .container form input,
+    .container form select {
+        margin-bottom: 10px;
+        padding: 8px;
+        font-size: 14px;
+        border: 1px solid #ccc;
+        border-radius: 4px;
+        box-sizing: border-box;
+    }
+    .container form button {
+        padding: 10px 20px;
+        background-color: #4CAF50;
+        color: white;
+        border: none;
+        border-radius: 4px;
+        cursor: pointer;
+        font-size: 16px;
+    }
+    .product-info {
+        margin-bottom: 20px;
+    }
+    .product-info table {
+        width: 100%; /* Lebar tabel */
+        border-collapse: collapse; /* Gabungkan garis tepi */
+    }
+    .product-info table th,
+    .product-info table td {
+        padding: 8px;
+        border: 1px solid #ccc;
+        text-align: left;
+    }
+    .product-info table th {
+        background-color: #f2f2f2;
+    }
+    .product-info table td.first-column {
+        width: 100px; /* Lebar kolom pertama */
+        font-weight: bold;
+    }
+</style>
+</head>
+<body>
+    <div class="container">
+        <div class="left-side">
+            <h2>Input Pesanan</h2>
+            <form id="pesananForm" onsubmit="submitPesanan(event)">
+                <input type="text" id="idPesanan" placeholder="ID Pesanan" required>
+                <input type="date" id="tanggalPesanan" required>
+                <input type="text" id="idProduk" placeholder="ID Produk" required>
+                <input type="number" id="jumlahPesanan" placeholder="Jumlah Pesanan" required>
+                <select id="statusPesanan" required>
+                    <option value="Belum Diproses">Belum Diproses</option>
+                    <option value="Sedang Diproses">Sedang Diproses</option>
+                    <option value="Selesai">Selesai</option>
+                </select>
+                <button type="submit">Submit Pesanan</button>
+            </form>
+        </div>
+        <div class="right-side">
+            <h2>Info Produk</h2>
+            <div class="product-info" id="productInfo">
+                <!-- Informasi produk akan ditampilkan dalam bentuk tabel -->
+            </div>
+        </div>
+    </div>
+
+    <script>
+        // Load saved produk information from localStorage
+        var savedProduk = JSON.parse(localStorage.getItem('produk'));
+        if (savedProduk) {
+            // Display produk information in the right side
+            var productInfoDiv = document.getElementById('productInfo');
+            var produkTable = `
+                <table>
+                    <tr>
+                        <td class="first-column">ID Produk:</td>
+                        <td>${savedProduk.idProduk}</td>
+                    </tr>
+                    <tr>
+                        <td class="first-column">Nama Produk:</td>
+                        <td>${savedProduk.namaProduk}</td>
+                    </tr>
+                    <tr>
+                        <td class="first-column">Deskripsi:</td>
+                        <td>${savedProduk.deskripsi}</td>
+                    </tr>
+                    <tr>
+                        <td class="first-column">Stock:</td>
+                        <td>${savedProduk.stock}</td>
+                    </tr>
+                    <tr>
+                        <td class="first-column">Harga:</td>
+                        <td>${savedProduk.harga}</td>
+                    </tr>
+                </table>
+            `;
+            productInfoDiv.innerHTML = produkTable;
+        }
+
+        function submitPesanan(event) {
+            event.preventDefault();
+            
+            // Get form values
+            var idPesanan = document.getElementById('idPesanan').value;
+            var tanggalPesanan = document.getElementById('tanggalPesanan').value;
+            var idProduk = document.getElementById('idProduk').value;
+            var jumlahPesanan = document.getElementById('jumlahPesanan').value;
+            var statusPesanan = document.getElementById('statusPesanan').value;
+            
+            // Simulate storing data (can be replaced with backend API call)
+            var pesanan = {
+                idPesanan: idPesanan,
+                tanggalPesanan: tanggalPesanan,
+                idProduk: idProduk,
+                jumlahPesanan: jumlahPesanan,
+                statusPesanan: statusPesanan
+            };
+
+            // Save pesanan to local storage (temporary simulation)
+            localStorage.setItem('pesanan', JSON.stringify(pesanan));
+            
+            // Redirect to customer dashboard or show confirmation
+            alert('Pesanan berhasil disubmit!');
+            window.location.href = "customer-dashboard.html";
+        }
+    </script>
+</body>
+</html>

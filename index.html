@@ -1,0 +1,212 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Logistik Management System</title>
+<style>
+    body {
+        font-family: Arial, sans-serif;
+        background-color: #f0f0f0;
+        margin: 0;
+        padding: 0;
+        display: flex;
+        justify-content: center;
+    }
+    .container {
+        display: flex;
+        width: 100%;
+        max-width: 1200px;
+    }
+    .sidebar {
+        width: 25%;
+        background-color: #4caf50;
+        color: #f0f0f0;
+        padding: 20px;
+        box-sizing: border-box;
+    }
+    .content {
+        flex: 1;
+        padding: 20px;
+        background-color: #fff;
+        box-shadow: 0 0 10px rgba(0,0,0,0.1);
+        border-radius: 8px;
+        margin-left: 20px;
+    }
+    .form-container {
+        text-align: center;
+    }
+    .form-container input, .form-container select, .form-container textarea {
+        width: calc(50% - 20px);
+        margin-bottom: 10px;
+        padding: 8px;
+        font-size: 14px;
+        border: 1px solid #ccc;
+        border-radius: 4px;
+        box-sizing: border-box;
+    }
+    .form-container textarea {
+        height: 100px;
+        resize: vertical;
+    }
+    .form-container button {
+        padding: 10px 20px;
+        background-color: #4CAF50;
+        color: white;
+        border: none;
+        border-radius: 4px;
+        cursor: pointer;
+        font-size: 16px;
+    }
+    table {
+        width: 100%;
+        border-collapse: collapse;
+        margin-top: 20px;
+    }
+    table, th, td {
+        border: 1px solid #ddd;
+        padding: 8px;
+        text-align: left;
+    }
+    th {
+        background-color: #f2f2f2;
+    }
+    .product-info {
+        margin-bottom: 20px;
+    }
+    .product-info p {
+        margin: 5px 0;
+    }
+</style>
+</head>
+<body>
+<div class="container">
+    <!-- Sidebar Menu -->
+    <div class="sidebar">
+        <h2>Menu</h2>
+        <ul>
+            <li><a href="#inputGudang">Input Data Gudang</a></li>
+            <li><a href="#inputProduk">Input Data Produk</a></li>
+            <li><a href="#daftarProduk">Daftar Produk</a></li>
+        </ul>
+    </div>
+    
+    <!-- Main Content -->
+    <div class="content">
+        <h1>Sistem Informasi Manajemen Logistik</h1>
+        
+        <!-- Input Data Gudang -->
+        <div id="inputGudang" class="form-container">
+            <h2>Input Data Gudang</h2>
+            <form id="gudangForm" onsubmit="submitGudang(event)">
+                <input type="text" id="idGudang" placeholder="ID Gudang" required>
+                <input type="text" id="lokasi" placeholder="Lokasi" required>
+                <input type="number" id="kapasitas" placeholder="Kapasitas" required>
+                <button type="submit">OK</button>
+            </form>
+        </div>
+        
+        <!-- Input Data Produk -->
+        <div id="inputProduk" class="form-container" style="display: none;">
+            <h2>Input Data Produk</h2>
+            <form id="produkForm" onsubmit="submitProduk(event)">
+                <input type="text" id="idProduk" placeholder="ID Produk" required>
+                <input type="text" id="namaProduk" placeholder="Nama Produk" required>
+                <textarea id="deskripsi" placeholder="Deskripsi" required></textarea>
+                <input type="number" id="stock" placeholder="Stock" required>
+                <input type="number" id="harga" placeholder="Harga" required>
+                <button type="submit">Submit</button>
+            </form>
+        </div>
+        
+        <!-- Daftar Produk -->
+        <div id="daftarProduk">
+            <h2>Daftar Produk</h2>
+            <table id="produkTable">
+                <thead>
+                    <tr>
+                        <th>ID Produk</th>
+                        <th>Nama Produk</th>
+                        <th>Deskripsi</th>
+                        <th>Stock</th>
+                        <th>Harga</th>
+                    </tr>
+                </thead>
+                <tbody id="produkList">
+                    <!-- Table rows will be inserted here dynamically -->
+                </tbody>
+            </table>
+        </div>
+    </div>
+</div>
+
+<script>
+// Function to handle submission of gudang form
+function submitGudang(event) {
+    event.preventDefault();
+    
+    // Hide input gudang form and show input produk form
+    document.getElementById('inputGudang').style.display = 'none';
+    document.getElementById('inputProduk').style.display = 'block';
+}
+
+// Function to handle submission of produk form
+function submitProduk(event) {
+    event.preventDefault();
+    
+    // Get form values
+    var idProduk = document.getElementById('idProduk').value;
+    var namaProduk = document.getElementById('namaProduk').value;
+    var deskripsi = document.getElementById('deskripsi').value;
+    var stock = document.getElementById('stock').value;
+    var harga = document.getElementById('harga').value;
+    
+    // Create table row
+    var table = document.getElementById('produkTable').getElementsByTagName('tbody')[0];
+    var newRow = table.insertRow();
+    newRow.innerHTML = `<td>${idProduk}</td><td>${namaProduk}</td><td>${deskripsi}</td><td>${stock}</td><td>${harga}</td>`;
+    
+    // Reset form
+    document.getElementById('produkForm').reset();
+    
+    // Save produk to localStorage (temporary simulation)
+    var produk = {
+        idProduk: idProduk,
+        namaProduk: namaProduk,
+        deskripsi: deskripsi,
+        stock: stock,
+        harga: harga
+    };
+    localStorage.setItem('produk', JSON.stringify(produk));
+    
+    // Redirect to input pesanan page
+    window.location.href = "input-pesanan.html";
+}
+
+// Function to load produk list from localStorage and display in the sidebar
+function loadProdukList() {
+    var produkList = JSON.parse(localStorage.getItem('produk'));
+    if (produkList) {
+        var produkListHTML = '';
+        for (var i = 0; i < produkList.length; i++) {
+            produkListHTML += `
+                <tr>
+                    <td>${produkList[i].idProduk}</td>
+                    <td>${produkList[i].namaProduk}</td>
+                    <td>${produkList[i].deskripsi}</td>
+                    <td>${produkList[i].stock}</td>
+                    <td>${produkList[i].harga}</td>
+                </tr>
+            `;
+        }
+        document.getElementById('produkList').innerHTML = produkListHTML;
+    }
+}
+
+// Call function to load produk list when the page loads
+loadProdukList();
+
+</script>
+
+</body>
+</html>
